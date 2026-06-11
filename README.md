@@ -1,73 +1,25 @@
-# React + TypeScript + Vite
+n8n Watchdog Console
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A custom observability dashboard for n8n built with React, TypeScript, and Tailwind CSS. This project addresses the critical need for platform transparency, enabling stakeholders to monitor workflow health, execution success rates, and system stability at a glance.
 
-Currently, two official plugins are available:
+Business Case
+Platform engineers and business stakeholders often lack visibility into automated processes. Relying on the native n8n interface for monitoring is insufficient for non-technical teams and lacks the high-level aggregation needed for proactive error resolution. This dashboard bridges that gap, transforming raw execution data into actionable intelligence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Technical Architecture & Best Practices
+As a Senior Full Stack implementation, this dashboard is designed for modularity and performance:
 
-## React Compiler
+Modular UI Architecture: Built with a "Component-First" strategy, separating data contracts (types), mocked API layers, and UI components (MetricCard, StatusIcon) to ensure the codebase remains readable and maintainable as features expand.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Strict Type Safety: Leverages TypeScript interfaces (Workflow, Metric) to guarantee consistent data structures across the application, eliminating runtime "undefined" errors common in standard JavaScript dashboards.
 
-## Expanding the ESLint configuration
+Industrial UI Design: Utilizes Tailwind CSS to implement a high-contrast "Industrial" aesthetic, optimized for monitoring environments where data density and clarity are paramount.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Dynamic Styling Utilities: Implements custom cn utility (using clsx and tailwind-merge) to safely merge conditional classes, ensuring UI states (healthy/warning/critical) are rendered cleanly without style conflicts.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Efficient Data Handling: Mocked API layer structured to be easily replaceable with real-world fetch or axios calls to n8n Webhooks or external APIs.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Installation & Local Development
+Clone the repository:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+git clone https://github.com/danielcisne/n8n-watchdog.git
+cd n8n-watchdog
