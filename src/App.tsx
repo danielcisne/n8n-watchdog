@@ -14,7 +14,7 @@ export default function App() {
             <Activity className="text-orange-500 w-6 h-6" />
             n8n Watchdog Console
           </h1>
-          <p className="text-sm text-slate-500 mt-1 tracking-wide uppercase">System Monitoring & Auto-Recovery</p>
+          <p className="text-sm text-slate-500 mt-1 tracking-wide uppercase">Workflow Observability Dashboard  </p>
         </div>
         
         <div className="flex items-center gap-2 text-xs font-medium bg-slate-900 px-4 py-2 rounded-md border border-slate-800 shadow-inner">
