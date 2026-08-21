@@ -21,78 +21,115 @@ The project focuses on presenting information in a format suitable for both tech
 - Responsive React-based interface.
 - Typed data models using TypeScript.
 - Mock data layer representing workflow and metric information.
-- Component-based UI architecture.
+- Reusable UI patterns for dashboard metrics and workflow status.
 - Conditional styling for different workflow states.
 
 ## Technical Architecture
 
-The application is structured around a separation between data models, mock data, utility functions, and UI components.
+The application is intentionally lightweight and separates mock data, TypeScript data contracts, UI utilities, and the main dashboard flow.
 
 ```text
 n8n Watchdog Console
 │
 ├── src/
-│   ├── components/
-│   │   └── Reusable dashboard UI components
-│   │
 │   ├── data/
-│   │   └── Mock workflow and metric data
+│   │   └── mockData.ts
+│   │       └── Mock workflow data
 │   │
 │   ├── types/
-│   │   └── TypeScript data contracts
+│   │   └── index.ts
+│   │       └── TypeScript data contracts
 │   │
-│   ├── lib/
-│   │   └── UI utility functions
+│   ├── utils/
+│   │   └── cn.ts
+│   │       └── Tailwind class merging utility
 │   │
-│   └── App.tsx
-│       └── Main dashboard application
+│   ├── App.tsx
+│   │   └── Main dashboard and UI patterns
+│   │
+│   ├── index.css
+│   │   └── Global Tailwind styles
+│   │
+│   └── main.tsx
+│       └── Application entry point
+│
+├── public/
+│   └── favicon.svg
 │
 ├── package.json
+├── package-lock.json
 ├── tsconfig.json
 ├── tsconfig.app.json
+├── tsconfig.node.json
 ├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
 └── eslint.config.js
 ```
 
-### Component Architecture
+### Main Application Flow
 
-The UI follows a component-based structure that separates reusable presentation components from application state and data definitions.
+The dashboard currently follows this frontend flow:
 
-Examples include:
+```text
+Mock workflow data
+        ↓
+Typed workflow models
+        ↓
+Dashboard state and presentation
+        ↓
+Workflow status indicators
+        ↓
+Execution metrics
+        ↓
+Operational dashboard
+```
 
-- Metric cards
-- Workflow status indicators
-- Dashboard sections
-- Reusable UI utilities
+### App.tsx
 
-This structure keeps the interface maintainable and allows additional monitoring features to be added without coupling the entire application to a single component.
+The main application coordinates the dashboard presentation and renders:
 
-### Type Safety
+- Workflow health information.
+- Execution metrics.
+- Status indicators.
+- Monitoring-oriented UI states.
+- The current demo mode indicator.
 
-The application uses TypeScript interfaces to define workflow and metric data structures.
-
-This provides consistent contracts between the mock data layer and the UI components and reduces the risk of inconsistent data being passed through the application.
-
-### Styling
-
-Tailwind CSS is used to implement the dashboard interface and its operational status states.
-
-The visual design uses a high-contrast industrial monitoring aesthetic with an emphasis on data density, hierarchy, and rapid status recognition.
+The dashboard uses reusable UI patterns such as `MetricCard` and `StatusIcon` within the main application file.
 
 ### Data Layer
 
-The current implementation uses mock workflow data.
+The current implementation uses a dedicated mock data module:
 
-The data layer is intentionally separated from the UI so that the mock implementation can be replaced by a real data source in a future version.
+```text
+src/data/mockData.ts
+```
 
-Potential integrations could include:
+This separation allows the dashboard UI to remain independent from the source of workflow data.
 
-- n8n webhooks
-- n8n API endpoints
-- External monitoring APIs
-- Custom backend services
+A future implementation could replace the mock data source with real execution data without requiring a complete redesign of the presentation layer.
 
-The current repository does not claim to provide a live n8n API integration.
+### Type System
+
+Workflow data is defined through TypeScript types in:
+
+```text
+src/types/index.ts
+```
+
+The `WorkflowStatus` union type restricts workflow states to:
+
+- `healthy`
+- `warning`
+- `critical`
+
+The `Workflow` interface provides a typed contract for workflow records displayed by the dashboard.
+
+### Styling Utilities
+
+The project uses a small `cn` utility based on `clsx` and `tailwind-merge` to handle conditional Tailwind CSS classes.
+
+This is used for UI states such as critical and non-critical metrics.
 
 ## Technology Stack
 
@@ -102,6 +139,7 @@ The current repository does not claim to provide a live n8n API integration.
 - Tailwind CSS
 - clsx
 - tailwind-merge
+- lucide-react
 - ESLint
 
 ## Local Development
@@ -127,6 +165,12 @@ npm run dev
 
 The application will be available at the local development URL provided by Vite.
 
+### Lint
+
+```bash
+npm run lint
+```
+
 ### Production Build
 
 ```bash
@@ -143,17 +187,38 @@ npm run preview
 
 The current dashboard uses mock data to demonstrate workflow monitoring and visualization.
 
-This is intentional: the repository focuses on the frontend architecture and observability experience rather than claiming a production connection to an n8n instance.
+This is intentional. The repository focuses on the frontend architecture and observability experience rather than claiming a production connection to an n8n instance.
 
-A future implementation could replace the mock data layer with real execution data without requiring a complete redesign of the dashboard components.
+The current interface explicitly indicates:
+
+```text
+DEMO MODE: MOCK DATA
+```
+
+A future implementation could replace the mock data layer with real execution data from an n8n API, webhook, or external monitoring service.
+
+## n8n Integration
+
+The current version does not establish a live connection to an n8n instance.
+
+The project is designed as a frontend observability prototype whose data layer can be replaced by a real integration in a future version.
+
+Potential integration approaches include:
+
+- n8n API endpoints.
+- n8n webhooks.
+- A dedicated backend service.
+- External monitoring or observability APIs.
+
+Keeping the data source separate from the dashboard presentation allows these integrations to be introduced without coupling the UI directly to a specific backend implementation.
 
 ## Project Status
 
-**Functional Prototype**
+**Functional Frontend Prototype**
 
 The dashboard interface and frontend architecture are implemented and functional.
 
-The current version uses mock data and does not establish a live connection to an n8n instance.
+The current version uses mock data and does not provide live n8n workflow monitoring.
 
 ## What This Project Demonstrates
 
@@ -161,14 +226,14 @@ This project demonstrates the ability to:
 
 - Translate an operational monitoring requirement into a focused web interface.
 - Build a React application using TypeScript.
-- Design reusable UI components.
 - Define typed data contracts.
-- Separate application data from presentation components.
 - Build dashboards around operational metrics.
-- Use conditional styling to communicate system states.
-- Structure a mock data layer for future API integration.
+- Use conditional styling to communicate workflow states.
+- Separate mock data from presentation logic.
+- Create a frontend architecture that can accommodate future API integration.
+- Build responsive interfaces with Tailwind CSS.
+- Use modern React and Vite tooling.
 - Develop and iterate on an AI-assisted coding workflow.
-- Produce a maintainable frontend foundation for future backend integration.
 
 ## AI-Assisted Development
 
@@ -176,12 +241,12 @@ This project was developed using AI-assisted programming workflows.
 
 AI was used as a development accelerator for tasks including:
 
-- Component implementation
-- UI development
-- TypeScript implementation
-- Debugging
-- Refactoring
-- Iterative feature development
+- UI implementation.
+- TypeScript development.
+- Component and interaction implementation.
+- Debugging.
+- Refactoring.
+- Iterative feature development.
 
 The implementation was reviewed and adapted to maintain control over the application's architecture, behavior, and technical direction.
 
